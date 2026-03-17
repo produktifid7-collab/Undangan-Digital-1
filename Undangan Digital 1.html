@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wedding of Romeo & Juliet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        .font-wedding { font-family: 'Dancing Script', cursive; }
+        .font-serif-elegant { font-family: 'Playfair Display', serif; }
+        
+        .bg-formal-gradasi { 
+            background: 
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.85), rgba(255, 248, 248, 0.9)),
+                url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80'); 
+            background-size: cover; 
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .page-border-container { padding: 15px; background: linear-gradient(135deg, #eaddd7 0%, #d1dace 100%); min-height: 100vh; position: relative; }
+        .main-card-wrapper { background: rgba(255, 255, 255, 0.4); border: 2px solid rgba(255,255,255,0.8); border-radius: 2rem; box-shadow: inset 0 0 50px rgba(255,255,255,0.3), 0 20px 40px rgba(0,0,0,0.03); padding-bottom: 50px; overflow: hidden; }
+        .content-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 2.5rem; padding: 2rem 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.02); margin-top: 1rem; width: 100%; }
+        
+        .floral-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
+        .petal { position: absolute; background-color: #ffffff; border-radius: 150% 0 150% 0; box-shadow: 0 0 5px rgba(0,0,0,0.05); animation: fade linear infinite; }
+        @keyframes fade {
+            0% { opacity: 0; top: -10%; transform: translateX(0) rotate(0deg); }
+            10% { opacity: 0.6; }
+            100% { opacity: 0; top: 110%; transform: translateX(100px) rotate(360deg); }
+        }
+
+        .sekat-ornament { display: flex; align-items: center; justify-content: center; margin: 4rem 0 1rem 0; gap: 1rem; }
+        .sekat-ornament::before, .sekat-ornament::after { content: ""; height: 1px; flex: 1; background: linear-gradient(to right, transparent, #6b705c, transparent); }
+        .leaf-icon { color: #6b705c; font-size: 1.2rem; }
+
+        #main-content, #gift-page { display: none; }
+        .photo-profile { width: 150px; height: 150px; object-fit: cover; border-radius: 50%; border: 5px solid white; box-shadow: 0 8px 15px rgba(0,0,0,0.08); }
+        .comment-card { background: white; padding: 1.25rem; border-radius: 1.25rem; border-left: 5px solid #a3b18a; box-shadow: 0 2px 4px rgba(0,0,0,0.03); margin-bottom: 1rem; width: 100%; word-wrap: break-word; }
+        .bank-card { background: linear-gradient(135deg, #344e41 0%, #3a5a40 100%); color: white; padding: 1.5rem; border-radius: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 15px 30px rgba(0,0,0,0.15); text-align: left; margin-bottom: 1.5rem; }
+        
+        .story-line { position: relative; padding-left: 1.5rem; border-left: 2px dashed #a3b18a; }
+        .story-dot { position: absolute; left: -0.55rem; top: 0; width: 1rem; height: 1rem; background: #588157; border-radius: 50%; border: 2px solid white; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade { animation: fadeIn 1.2s ease-out forwards; }
+
+        .page-exit { animation: pageExitAnim 1.2s ease-in forwards; }
+        .page-enter { display: block !important; animation: pageEnterAnim 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+        @keyframes pageExitAnim { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100vh); } }
+        @keyframes pageEnterAnim { 0% { opacity: 0; transform: translateY(100vh); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* GALLERY SLIDER */
+        .gallery-track { display: flex; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .gallery-slide { min-width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 0 10px; }
+        .gallery-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 1rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="font-['Inter'] text-gray-700 bg-stone-100">
+
+    <div class="floral-container" id="floral-shower"></div>
+
+    <audio id="wedding-music" loop>
+        <source src="Kota ini.mp3" type="audio/mpeg">
+    </audio>
+
+    <section id="cover" class="h-screen flex flex-col items-center justify-center text-center p-6 relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1510076857177-7470076d4098" class="w-full h-full object-cover opacity-40">
+        </div>
+        <div class="relative z-10 animate-fade">
+            <p class="uppercase tracking-[0.4em] text-[9px] mb-4 text-gray-600 font-bold">The Wedding Of</p>
+            <h1 class="text-6xl md:text-8xl font-wedding text-stone-800 mb-6 drop-shadow-sm">Romeo & Juliet</h1>
+            <div class="bg-white/50 backdrop-blur-md p-6 rounded-3xl mb-10 border border-white/60 inline-block shadow-sm">
+                <p class="text-[9px] uppercase text-stone-500 mb-2 font-bold tracking-widest">Kepada yth. Bapak/Ibu/Sdr/i</p>
+                <p id="guest-name-cover" class="font-bold text-xl text-stone-800">Keluarga Besar</p>
+            </div>
+            <br>
+            <button onclick="openInvitation()" class="bg-[#588157] text-white px-12 py-4 rounded-full font-bold uppercase text-[10px] tracking-[0.2em] shadow-xl hover:bg-[#3a5a40] transition-all">Buka Undangan</button>
+        </div>
+    </section>
+
+    <div id="main-content" class="page-border-container">
+        <div class="main-card-wrapper bg-formal-gradasi min-h-screen">
+            
+            <section class="pt-20 px-4 max-w-5xl mx-auto reveal">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc" class="w-full aspect-square object-cover rounded-2xl shadow-sm rotate-1">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed" class="w-full aspect-square object-cover rounded-2xl shadow-sm -rotate-1 mt-6">
+                    <img src="https://images.unsplash.com/photo-1494774157365-9e04c6720e47" class="w-full aspect-square object-cover rounded-2xl shadow-sm rotate-1">
+                    <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a" class="w-full aspect-square object-cover rounded-2xl shadow-sm -rotate-1 mt-6">
+                </div>
+            </section>
+
+            <section class="py-10 px-6 max-w-4xl mx-auto text-center reveal">
+                <h2 class="text-2xl font-serif-elegant mb-2 text-stone-800 font-bold italic">Assalamu’alaikum Wr. Wb.</h2>
+                <p class="text-xs text-stone-500 leading-relaxed mb-10 italic max-w-sm mx-auto">Maha suci Allah yang telah menciptakan mahluk-Nya berpasang-pasangan. Dengan memohon rahmat serta ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir di acara pernikahan kami:</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-10">
+                    <div class="flex flex-col items-center">
+                        <img src="https://images.unsplash.com/photo-1537367630562-ca0765230fc4" class="photo-profile">
+                        <h3 class="text-2xl font-wedding text-stone-800 mt-4">Romeo Montague, S.Geo</h3>
+                        <p class="text-[10px] text-stone-500 uppercase mt-2">Putra dari Bapak Montague & Ibu Montague</p>
+                        <a href="https://instagram.com" target="_blank" class="text-[9px] text-[#588157] font-bold mt-2 tracking-widest uppercase">📸 @ROMEO_GEO</a>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed" class="photo-profile">
+                        <h3 class="text-2xl font-wedding text-stone-800 mt-4">Juliet Capulet, S.T</h3>
+                        <p class="text-[10px] text-stone-500 uppercase mt-2">Putri dari Bapak Capulet & Ibu Capulet</p>
+                        <a href="https://instagram.com" target="_blank" class="text-[9px] text-[#588157] font-bold mt-2 tracking-widest uppercase">📸 @JULIET_TECH</a>
+                    </div>
+                </div>
+
+                <div class="sekat-ornament reveal"><span class="leaf-icon">🌿</span></div>
+                
+                <div class="content-box text-left reveal">
+                    <h2 class="text-3xl font-wedding text-stone-800 mb-8 text-center">Our Love Story</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="space-y-6">
+                            <div class="story-line"><div class="story-dot"></div><p class="text-stone-700 font-bold text-sm">2021 - Pertemuan</p><p class="text-xs text-stone-500 italic">"Peta mempertemukan langkah kami di Lab Geografi."</p></div>
+                            <div class="story-line"><div class="story-dot"></div><p class="text-stone-700 font-bold text-sm">2025 - Menuju Halal</p><p class="text-xs text-stone-500 italic">"Satu langkah besar untuk saling melengkapi selamanya."</p></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <img src="https://images.unsplash.com/photo-1522673607200-1648832cee77" class="w-full aspect-square object-cover rounded-xl">
+                            <img src="https://images.unsplash.com/photo-1516589174184-c685266e430c" class="w-full aspect-square object-cover rounded-xl mt-4">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sekat-ornament reveal"><span class="leaf-icon">🌿</span></div>
+                
+                <div class="content-box reveal">
+                    <h3 class="font-serif-elegant text-stone-700 text-xl mb-2 italic">Save the Date</h3>
+                    <p class="text-stone-800 font-bold tracking-widest mb-8 text-lg uppercase">Sabtu, 14 Februari 2026</p>
+                    <div class="flex justify-center gap-3 text-white font-bold mb-10" id="timer">
+                        <div class="bg-[#588157] p-4 rounded-2xl min-w-[65px] shadow-md"><span id="days" class="text-2xl block">00</span><small class="text-[8px]">HARI</small></div>
+                        <div class="bg-[#588157] p-4 rounded-2xl min-w-[65px] shadow-md"><span id="hours" class="text-2xl block">00</span><small class="text-[8px]">JAM</small></div>
+                        <div class="bg-[#3a5a40] p-4 rounded-2xl min-w-[65px] shadow-md"><span id="minutes" class="text-2xl block">00</span><small class="text-[8px]">MENIT</small></div>
+                        <div class="bg-[#3a5a40] p-4 rounded-2xl min-w-[65px] shadow-md"><span id="seconds" class="text-2xl block">00</span><small class="text-[8px]">DETIK</small></div>
+                    </div>
+                    
+                    <div class="main-container">
+                    <div class="countdown-wrapper">
+                    </div>
+
+                    <div class="content-wrapper">
+                    <h2 class="text-2xl font-serif-elegant mb-2 text-stone-800 font-bold">Bahagia Kami</h2>
+                    <p class="text-xs text-stone-500 leading-relaxed mb-10 italic max-w-sm mx-auto">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sesungguhnya pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir." (QS. Ar-Rum: 21).</p>
+                    </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="bg-white/50 p-5 rounded-2xl border border-white">
+                            <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8" class="w-full h-32 object-cover rounded-xl mb-3">
+                            <h4 class="font-wedding text-xl text-stone-800">Akad Nikah</h4>
+                            <p class="text-[10px] text-stone-500 uppercase">08.00 WIB | Masjid Raya</p>
+                            <a href="https://maps.app.goo.gl/9ZpYfK5p8GzD6J9N8" target="_blank" class="inline-block mt-3 text-[9px] bg-[#588157] text-white px-4 py-1 rounded-full font-bold uppercase tracking-wider">Buka Peta</a>
+                        </div>
+                        <div class="bg-white/50 p-5 rounded-2xl border border-white">
+                            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b" class="w-full h-32 object-cover rounded-xl mb-3">
+                            <h4 class="font-wedding text-xl text-stone-800">Resepsi</h4>
+                            <p class="text-[10px] text-stone-500 uppercase">11.00 WIB | Gedung Kebahagiaan</p>
+                            <a href="https://maps.app.goo.gl/9ZpYfK5p8GzD6J9N8" target="_blank" class="inline-block mt-3 text-[9px] bg-[#3a5a40] text-white px-4 py-1 rounded-full font-bold uppercase tracking-wider">Buka Peta</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sekat-ornament reveal"><span class="leaf-icon">🌿</span></div>
+                <div class="content-box reveal">
+                    <h3 class="text-3xl font-wedding text-stone-800 mb-4 text-center">Our Gallery</h3>
+                    <div class="relative overflow-hidden w-full max-w-sm mx-auto">
+                        <div id="gallery-track" class="gallery-track">
+                            <div class="gallery-slide">
+                                <img src="https://images.unsplash.com/photo-1519741497674-611481863552" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf" class="gallery-img">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1522673607200-1648832cee77" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b" class="gallery-img">
+                                <img src="https://images.unsplash.com/photo-1510076857177-7470076d4098" class="gallery-img">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center gap-2 mt-4">
+                        <div onclick="goToSlide(0)" class="w-3 h-3 rounded-full bg-[#588157] gallery-dot cursor-pointer transition-all"></div>
+                        <div onclick="goToSlide(1)" class="w-3 h-3 rounded-full bg-stone-300 gallery-dot cursor-pointer transition-all"></div>
+                    </div>
+                </div>
+
+                <div class="sekat-ornament reveal"><span class="leaf-icon">🌿</span></div>
+                <div class="content-box reveal">
+                    <h3 class="text-3xl font-wedding text-stone-800 mb-4">Tanda Kasih</h3>
+                    <p class="text-xs text-stone-500 italic px-4 mb-8 leading-relaxed">"Doa restu Anda adalah kado terindah bagi kami. Namun jika ingin memberikan tanda kasih secara digital, Anda dapat melalui tombol di bawah ini."</p>
+                    <button onclick="showGiftPage()" class="bg-[#3a5a40] text-white px-10 py-4 rounded-full font-bold shadow-lg animate-bounce text-[10px] tracking-widest uppercase">Kirim Hadiah 🎁</button>
+                </div>
+
+                <div class="sekat-ornament reveal"><span class="leaf-icon">🌿</span></div>
+                <div class="content-box text-left reveal">
+                    <h3 class="text-2xl font-wedding text-center text-stone-800 mb-8">Buku Tamu & RSVP</h3>
+                    <form onsubmit="submitGuest(event)" class="space-y-4 mb-10">
+                        <input type="text" id="guest-name" placeholder="Nama Anda" required class="w-full p-4 border-0 rounded-2xl outline-none ring-1 ring-stone-200 bg-white/80">
+                        <select id="guest-status" required class="w-full p-4 border-0 rounded-2xl outline-none ring-1 ring-stone-200 bg-white/80 text-stone-500">
+                            <option value="" disabled selected>Konfirmasi Kehadiran</option>
+                            <option value="Hadir">Saya Akan Hadir</option>
+                            <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+                        </select>
+                        <textarea id="message" rows="4" placeholder="Tulis ucapan..." required class="w-full p-4 border-0 rounded-2xl outline-none ring-1 ring-stone-200 bg-white/80"></textarea>
+                        <button type="submit" class="w-full bg-[#588157] text-white font-bold py-4 rounded-full shadow-md text-sm uppercase">Kirim Ucapan</button>
+                    </form>
+
+                    <div class="flex gap-4 mb-6">
+                        <div class="flex-1 bg-green-50 p-3 rounded-2xl text-center border border-green-100">
+                            <p class="text-[8px] uppercase font-bold text-green-600 tracking-widest">Hadir</p>
+                            <span id="count-hadir" class="text-lg font-bold text-green-800">0</span>
+                        </div>
+                        <div class="flex-1 bg-red-50 p-3 rounded-2xl text-center border border-red-100">
+                            <p class="text-[8px] uppercase font-bold text-red-600 tracking-widest">Berhalangan</p>
+                            <span id="count-tidak" class="text-lg font-bold text-red-800">0</span>
+                        </div>
+                    </div>
+
+                    <div id="guest-list" class="space-y-4"></div>
+                    <div id="pagination-controls" class="flex justify-between items-center mt-6 hidden">
+                        <button onclick="changePage(-1)" id="btn-prev" class="text-[10px] bg-white border px-4 py-2 rounded-full font-bold">← Prev</button>
+                        <span id="page-info" class="text-[10px] text-stone-400 font-bold tracking-widest uppercase">Hal 1</span>
+                        <button onclick="changePage(1)" id="btn-next" class="text-[10px] bg-white border px-4 py-2 rounded-full font-bold">Next →</button>
+                    </div>
+
+                    <div class="mt-12 text-center">
+                        <h2 class="text-2xl font-wedding text-stone-800 mb-4">Wassalamu’alaikum Wr. Wb.</h2>
+                        <p class="text-[11px] text-stone-500 italic px-6 font-serif-elegant font-bold text-stone-700 text-sm">Romeo & Juliet</p>
+                    </div>
+                </div>
+
+                <div class="mt-20 flex flex-col items-center gap-4 reveal">
+                <p class="text-[10px] tracking-widest text-stone-400 uppercase font-bold">by: Produktif id</p>
+                <div class="flex justify-center gap-8">
+                    <a href="https://instagram.com/produktifid_76/" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="w-7 h-7 opacity-70"></a>
+                    <a href="https://wa.me/6287873667982" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="w-7 h-7 opacity-70"></a>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="gift-page" class="fixed inset-0 bg-white z-[100] overflow-y-auto p-6 bg-formal-gradasi flex flex-col items-center pt-20">
+        <button onclick="hideGiftPage()" class="fixed top-6 right-6 text-xl bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center font-bold text-stone-500">✕</button>
+        <div class="max-w-md w-full animate-fade">
+            <h2 class="text-4xl font-wedding text-stone-800 text-center mb-10">Wedding Gift</h2>
+            <div class="space-y-4 mb-8">
+                <div class="bank-card">
+                    <div class="flex justify-between items-center mb-6"><span class="italic font-bold text-xl uppercase">BCA</span></div>
+                    <p class="text-2xl font-mono mb-4 text-white">1234 567 890</p>
+                    <p class="text-[10px] uppercase font-bold text-white tracking-widest">Romeo Montague</p>
+                    <button onclick="copyRek('1234567890')" class="mt-6 w-full bg-white/10 py-3 rounded-xl text-[9px] font-bold text-white">SALIN REKENING</button>
+                </div>
+                <div class="bank-card" style="background: linear-gradient(135deg, #4b5320 0%, #6b705c 100%);">
+                    <div class="flex justify-between items-center mb-6"><span class="italic font-bold text-xl uppercase">MANDIRI</span></div>
+                    <p class="text-2xl font-mono mb-4 text-white">0987 654 321</p>
+                    <p class="text-[10px] uppercase font-bold text-white tracking-widest">Juliet Capulet</p>
+                    <button onclick="copyRek('0987654321')" class="mt-6 w-full bg-white/10 py-3 rounded-xl text-[9px] font-bold text-white">SALIN REKENING</button>
+                </div>
+            </div>
+            <div class="bg-white/60 p-6 rounded-[2rem] text-center border border-white">
+                <h4 class="font-bold text-stone-700 text-[10px] uppercase mb-2 tracking-widest">Alamat Pengiriman</h4>
+                <p class="text-xs text-stone-500 italic">Perumahan Asri Bahagia, Blok C No. 12, Tarogong Kaler, Garut.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbeA9YO_VAWoqmGas5fm4IFRmQCn7agnM",
+            authDomain: "undangan-kita-6d9dc.firebaseapp.com",
+            databaseURL: "https://undangan-kita-6d9dc-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "undangan-kita-6d9dc",
+            storageBucket: "undangan-kita-6d9dc.firebasestorage.app",
+            messagingSenderId: "463615968428",
+            appId: "1:463615968428:web:b4171f729e0f564db4cb09"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const guestRef = db.ref('comments');
+
+        let allComments = [];
+        let currentPage = 1;
+        const perPage = 5;
+
+        // --- LOGIKA GALLERY BARU (HALUS & MANUAL) ---
+        let currentSlide = 0;
+        const totalSlides = 2;
+        let autoSlideInterval;
+
+        function updateGallery() {
+            const track = document.getElementById('gallery-track');
+            const dots = document.querySelectorAll('.gallery-dot');
+            if(track) {
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                dots.forEach((dot, i) => {
+                    if (i === currentSlide) {
+                        dot.classList.add('bg-[#588157]');
+                        dot.classList.remove('bg-stone-300');
+                        dot.style.transform = 'scale(1.2)';
+                    } else {
+                        dot.classList.remove('bg-[#588157]');
+                        dot.classList.add('bg-stone-300');
+                        dot.style.transform = 'scale(1)';
+                    }
+                });
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateGallery();
+            resetAutoSlide();
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateGallery();
+            }, 5000);
+        }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            startAutoSlide();
+        }
+        startAutoSlide();
+        // --- END LOGIKA GALLERY ---
+
+        function initReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                    else entry.target.classList.remove('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+        function openInvitation() {
+            document.getElementById('wedding-music').play();
+            initReveal();
+            document.getElementById('cover').classList.add('page-exit');
+            setTimeout(() => {
+                document.getElementById('cover').style.display = 'none';
+                document.getElementById('main-content').classList.add('page-enter');
+                window.scrollTo(0, 0);
+            }, 1100);
+        }
+
+        const weddingDate = new Date("Feb 14, 2026 08:00:00").getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const dist = weddingDate - now;
+            document.getElementById("days").innerText = Math.floor(dist / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((dist % (1000 * 60)) / 1000);
+        }, 1000);
+
+        function showGiftPage() { document.getElementById('gift-page').style.display = 'flex'; }
+        function hideGiftPage() { document.getElementById('gift-page').style.display = 'none'; }
+        function copyRek(no) { navigator.clipboard.writeText(no); alert("Rekening Disalin!"); }
+
+        function submitGuest(e) {
+            e.preventDefault();
+            guestRef.push({
+                name: document.getElementById('guest-name').value,
+                status: document.getElementById('guest-status').value,
+                msg: document.getElementById('message').value,
+                time: Date.now()
+            });
+            e.target.reset();
+        }
+
+        guestRef.on('value', (snapshot) => {
+            allComments = [];
+            let hadir = 0; let tidak = 0;
+            snapshot.forEach((child) => { 
+                const data = child.val();
+                allComments.push(data); 
+                if(data.status === "Hadir") hadir++; else tidak++;
+            });
+            document.getElementById('count-hadir').innerText = hadir;
+            document.getElementById('count-tidak').innerText = tidak;
+            allComments.sort((a, b) => b.time - a.time);
+            renderComments();
+        });
+
+        function renderComments() {
+            const list = document.getElementById('guest-list');
+            list.innerHTML = "";
+            const start = (currentPage - 1) * perPage;
+            const paginatedItems = allComments.slice(start, start + perPage);
+
+            paginatedItems.forEach(item => {
+                const dateObj = new Date(item.time);
+                const dateStr = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                const timeStr = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                const badge = item.status === "Hadir" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700";
+
+                const card = document.createElement('div');
+                card.className = "comment-card animate-fade";
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-1 border-b pb-2">
+                        <span class="font-bold text-stone-700 text-sm">${item.name}</span>
+                        <span class="text-[8px] px-2 py-1 rounded-full font-bold ${badge}">${item.status.toUpperCase()}</span>
+                    </div>
+                    <p class="text-[11px] text-stone-500 leading-relaxed mb-2">${item.msg}</p>
+                    <div class="text-right"><span class="text-[8px] text-stone-400 italic">${dateStr} • ${timeStr} WIB</span></div>
+                `;
+                list.appendChild(card);
+            });
+
+            if (allComments.length > perPage) {
+                document.getElementById('pagination-controls').classList.remove('hidden');
+                document.getElementById('page-info').innerText = `Hal ${currentPage}`;
+            }
+        }
+
+        function changePage(step) { currentPage += step; renderComments(); }
+
+        function createPetals() {
+            const container = document.getElementById('floral-shower');
+            for (let i = 0; i < 20; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.width = petal.style.height = Math.random() * 10 + 10 + 'px';
+                petal.style.animationDuration = Math.random() * 3 + 5 + 's';
+                container.appendChild(petal);
+            }
+        }
+        createPetals();
+
+        window.onload = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            if (guestName) document.getElementById('guest-name-cover').innerText = decodeURIComponent(guestName);
+        };
+    </script>
+</body>
+</html>
