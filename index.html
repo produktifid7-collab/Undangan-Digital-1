@@ -7,16 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     <style>
+        #gallery-track {
+    will-change: transform;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Animasi lebih cepat & efisien */
+}
         html { scroll-behavior: smooth; }
         .font-wedding { font-family: 'Dancing Script', cursive; }
         .font-serif-elegant { font-family: 'Playfair Display', serif; }
         
+        /* Tambahkan ini di dalam tag <style> */
+body { 
+    background-color: #d6d3d1; /* Warna latar belakang luar frame (untuk tampilan laptop) */
+} 
+
+.mobile-frame {
+    max-width: 450px;
+    margin: 0 auto;
+    background-color: #ffffff; /* Warna dasar dalam undangan */
+    min-height: 100vh;
+    position: relative;
+    box-shadow: 0 0 100px rgba(0,0,0,0.2);
+    overflow-x: hidden;
+}
         .bg-formal-gradasi { 
             background: 
                 linear-gradient(to bottom, rgba(255, 255, 255, 0.85), rgba(255, 248, 248, 0.9)),
                 url('https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&q=80'); 
             background-size: cover; 
-            background-attachment: fixed;
+            background-attachment: scroll;
             background-position: center;
         }
 
@@ -25,7 +43,7 @@
 
         .page-border-container { padding: 15px; background: linear-gradient(135deg, #eaddd7 0%, #d1dace 100%); min-height: 100vh; position: relative; }
         .main-card-wrapper { background: rgba(255, 255, 255, 0.4); border: 2px solid rgba(255,255,255,0.8); border-radius: 2rem; box-shadow: inset 0 0 50px rgba(255,255,255,0.3), 0 20px 40px rgba(0,0,0,0.03); padding-bottom: 50px; overflow: hidden; }
-        .content-box { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 2.5rem; padding: 2rem 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.02); margin-top: 1rem; width: 100%; }
+        .content-box { background: rgba(255, 255, 255, 0.6); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 2.5rem; padding: 2rem 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.02); margin-top: 1rem; width: 100%; }
         
         .floral-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; overflow: hidden; }
         .petal { position: absolute; background-color: #ffffff; border-radius: 150% 0 150% 0; box-shadow: 0 0 5px rgba(0,0,0,0.05); animation: fade linear infinite; }
@@ -62,6 +80,7 @@
         .gallery-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 1rem; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     </style>
 </head>
+<div class="mobile-frame">
 <body class="font-['Inter'] text-gray-700 bg-stone-100">
 
     <div class="floral-container" id="floral-shower"></div>
@@ -331,7 +350,7 @@
             autoSlideInterval = setInterval(() => {
                 currentSlide = (currentSlide + 1) % totalSlides;
                 updateGallery();
-            }, 5000);
+            }, 8000);
         }
 
         function resetAutoSlide() {
@@ -436,7 +455,7 @@
 
         function createPetals() {
             const container = document.getElementById('floral-shower');
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 5; i++) {
                 const petal = document.createElement('div');
                 petal.className = 'petal';
                 petal.style.left = Math.random() * 100 + '%';
